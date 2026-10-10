@@ -3,321 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agroaplicaciones Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AgroGestionStock</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --input-bg: #0f172a;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin: 0;
+        }
+
+        .badge-conexion {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .dot.error {
+            background-color: #ef4444;
+            box-shadow: 0 0 8px #ef4444;
+        }
+
+        .badge-conexion.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-green);
+        }
+
+        input[readonly] {
+            color: var(--text-muted);
+            cursor: not-allowed;
+            background-color: #0b1120 !important;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .loading { 
+            font-size: 12px; 
+            color: var(--text-muted); 
+            font-style: italic; 
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans p-4">
+<body>
 
-    <div class="max-w-4xl mx-auto bg-slate-800 rounded-2xl shadow-2xl p-6 my-6 border border-slate-700">
-        <header class="border-b border-slate-700 pb-4 mb-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-emerald-400">🌾 Agroaplicaciones Pro</h1>
-                <p class="text-slate-400 text-sm">Filtro inteligente: Principio Activo ↔ Producto Comercial</p>
-            </div>
-            <div id="estado-conexion" class="text-xs bg-slate-700 px-3 py-1 rounded-full text-slate-300">
-                ⏳ Cargando Maestros...
-            </div>
-        </header>
-
-        <form id="form-agro" class="space-y-6">
-            <!-- DATOS GENERALES -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Fecha</label>
-                    <input type="date" id="fecha" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Operario</label>
-                    <select id="operario" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                        <option value="">Seleccione operario...</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Establecimiento</label>
-                    <select id="establecimiento" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                        <option value="">Seleccione establecimiento...</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Lote</label>
-                    <input type="text" id="lote" placeholder="Ej. Lote 4 Norte" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Superficie (ha)</label>
-                    <input type="number" step="0.01" id="superficie" placeholder="46" required oninput="calcularTotales()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Caudal Caldo (L/ha)</label>
-                    <input type="number" step="0.01" id="caudalHa" placeholder="15" value="15" required oninput="calcularTotales()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-            </div>
-
-            <!-- RESULTADO DE CALDO -->
-            <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex justify-between items-center">
-                <div>
-                    <span class="text-xs text-slate-400 uppercase block">Caldo Total Requerido</span>
-                    <span id="txt-caldo-total" class="text-2xl font-bold text-emerald-400">0.00 Litros</span>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs text-slate-500">Superficie × Caudal</span>
-                </div>
-            </div>
-
-            <!-- MEZCLA DE PRODUCTOS -->
-            <div class="border-t border-slate-700 pt-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-md font-semibold text-slate-200">Mezcla de Productos (Filtro Doble)</h3>
-                    <button type="button" onclick="agregarProductoFila()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-2 rounded-lg transition">
-                        + Agregar Producto
-                    </button>
-                </div>
-
-                <div id="lista-productos" class="space-y-3">
-                    <!-- Filas dinámicas -->
-                </div>
-            </div>
-
-            <button type="submit" id="btn-enviar" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 rounded-xl shadow-lg transition duration-200 mt-6">
-                Guardar Aplicación en Google Sheets 🚀
-            </button>
-        </form>
-
-        <div id="mensaje" class="mt-4 text-center text-sm font-medium"></div>
+<div class="container">
+    <div class="header">
+        <h1 class="app-title">AgroGestionStock</h1>
+        <div id="badgeConexion" class="badge-conexion">
+            <span id="dotConexion" class="dot"></span>
+            <span id="txtConexion">Conectado a Google Sheets</span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Fecha:</label>
+        <input type="date" id="fecha" required>
     </div>
 
-    <script>
-        document.getElementById('fecha').valueAsDate = new Date();
-        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbw27yNxr1wNDU5P51N9ox4rjwur-s1trui-Bxh6eu9GRf4GiMoRecP647ao9d4mweu2hg/exec";
+    <div class="form-group">
+        <label>Producto:</label>
+        <select id="producto" onchange="actualizarPrincipioActivo()" required>
+            <option value="">Cargando productos...</option>
+        </select>
+    </div>
 
-        let listaGlobalProductos = [];
-        let listaGlobalPA = [];
+    <div class="form-group">
+        <label>Principio Activo:</label>
+        <input type="text" id="principioActivo" placeholder="Se completa solo..." readonly>
+    </div>
 
-        function cargarMaestros() {
-            const estado = document.getElementById('estado-conexion');
-            fetch(URL_WEB_APP)
-                .then(res => res.json())
-                .then(res => {
-                    if(res.status === 'success') {
-                        const m = res.maestros;
-                        
-                        // Operarios
-                        const selOp = document.getElementById('operario');
-                        selOp.innerHTML = '<option value="">Seleccione operario...</option>';
-                        m.operarios.forEach(op => selOp.innerHTML += `<option value="${op}">${op}</option>`);
+    <div class="form-group">
+        <label>Cantidad (Litros/Kilos):</label>
+        <input type="number" id="cantidad" step="0.01" required>
+    </div>
 
-                        // Establecimientos
-                        const selEst = document.getElementById('establecimiento');
-                        selEst.innerHTML = '<option value="">Seleccione establecimiento...</option>';
-                        m.establecimientos.forEach(est => selEst.innerHTML += `<option value="${est}">${est}</option>`);
+    <button onclick="guardarStock()">Ingresar Stock</button>
+</div>
 
-                        // Productos y Principios Activos
-                        listaGlobalProductos = m.productos;
-                        listaGlobalPA = [...new Set(m.productos.map(p => p.principioActivo))].sort();
+<script>
+    // URL de tu Apps Script (Reemplazar con la tuya)
+    const urlScript = 'https://script.google.com/macros/s/AKfycbw27yNxr1wNDU5P51N9ox4rjwur-s1trui-Bxh6eu9GRf4GiMoRecP647ao9d4mweu2hg/exec'; 
 
-                        estado.textContent = "🟢 Conectado a Google Sheets";
-                        document.getElementById('lista-productos').innerHTML = '';
-                        agregarProductoFila();
-                    } else {
-                        estado.textContent = "🔴 Error al cargar maestros";
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    estado.textContent = "🔴 Error de conexión";
-                });
-        }
+    // Guardamos la lista completa de productos para consultar sus datos fácilmente
+    let listaProductosGlobal = [];
 
-        function agregarProductoFila() {
-            const container = document.getElementById('lista-productos');
-            const div = document.createElement('div');
-            div.className = "fila-prod flex flex-col md:flex-row gap-2 items-center bg-slate-900 p-3 rounded-xl border border-slate-700";
+    // Fecha de hoy por defecto
+    document.getElementById('fecha').valueAsDate = new Date();
 
-            let paOptions = `<option value="">Filtrar p/ Principio Activo...</option>`;
-            listaGlobalPA.forEach(pa => {
-                paOptions += `<option value="${pa}">${pa}</option>`;
-            });
-
-            div.innerHTML = `
-                <!-- DESPLEGABLE 1: PRINCIPIO ACTIVO -->
-                <select class="sel-pa flex-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-emerald-300 outline-none" onchange="alCambiarPA(this)">
-                    ${paOptions}
-                </select>
-
-                <!-- DESPLEGABLE 2: PRODUCTO COMERCIAL -->
-                <select class="sel-prod flex-1 w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none" onchange="alCambiarProducto(this)" required>
-                    <option value="">Seleccione Producto...</option>
-                </select>
-
-                <div class="flex gap-2 w-full md:w-auto items-center">
-                    <input type="number" step="0.001" placeholder="Dosis" class="input-dosis w-24 bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white text-center outline-none" required oninput="calcularTotales()">
-                    <span class="txt-unidad text-xs text-slate-400 w-12">L/ha</span>
-                    <span class="txt-total text-xs text-emerald-400 font-semibold w-24 text-right">0 total</span>
-                    <button type="button" onclick="this.closest('.fila-prod').remove(); calcularTotales();" class="text-rose-400 hover:text-rose-300 font-bold px-2">✕</button>
-                </div>
-            `;
-            container.appendChild(div);
-            poblarProductosEnFila(div.querySelector('.sel-prod'), listaGlobalProductos);
-        }
-
-        function poblarProductosEnFila(selectProd, productosLista) {
-            const valorPrevio = selectProd.value;
-            selectProd.innerHTML = '<option value="">Seleccione Producto...</option>';
-            productosLista.forEach(p => {
-                const sel = (p.nombre === valorPrevio) ? "selected" : "";
-                selectProd.innerHTML += `<option value="${p.nombre}" data-pa="${p.principioActivo}" data-dosis="${p.dosisSugerida}" data-unidad="${p.unidad}" ${sel}>${p.nombre}</option>`;
-            });
-        }
-
-        // SI CAMBIA EL PRINCIPIO ACTIVO -> FILTRA EL DESPLEGABLE DE PRODUCTOS
-        function alCambiarPA(selectPA) {
-            const fila = selectPA.closest('.fila-prod');
-            const paSeleccionado = selectPA.value;
-            const selectProd = fila.querySelector('.sel-prod');
-
-            if (paSeleccionado === "") {
-                poblarProductosEnFila(selectProd, listaGlobalProductos);
-            } else {
-                const filtrados = listaGlobalProductos.filter(p => p.principioActivo === paSeleccionado);
-                poblarProductosEnFila(selectProd, filtrados);
-            }
-        }
-
-        // SI CAMBIA EL PRODUCTO COMERCIAL -> AUTOCOMPLETA EL PRINCIPIO ACTIVO
-        function alCambiarProducto(selectProd) {
-            const fila = selectProd.closest('.fila-prod');
-            const opt = selectProd.options[selectProd.selectedIndex];
-            const selectPA = fila.querySelector('.sel-pa');
-
-            if (selectProd.value !== "") {
-                const paAsociado = opt.getAttribute('data-pa');
-                const dosis = opt.getAttribute('data-dosis');
-                const unidad = opt.getAttribute('data-unidad');
-
-                selectPA.value = paAsociado;
-                if (!fila.querySelector('.input-dosis').value) {
-                    fila.querySelector('.input-dosis').value = dosis;
-                }
-                fila.querySelector('.txt-unidad').textContent = unidad;
-            }
-            calcularTotales();
-        }
-
-        function calcularTotales() {
-            const sup = parseFloat(document.getElementById('superficie').value) || 0;
-            const caudal = parseFloat(document.getElementById('caudalHa').value) || 0;
-            
-            document.getElementById('txt-caldo-total').textContent = (sup * caudal).toFixed(2) + " Litros";
-
-            document.querySelectorAll('.fila-prod').forEach(fila => {
-                const dosis = parseFloat(fila.querySelector('.input-dosis').value) || 0;
-                const unidad = fila.querySelector('.txt-unidad').textContent;
-                fila.querySelector('.txt-total').textContent = (sup * dosis).toFixed(2) + " " + unidad.replace('/ha', '');
-            });
-        }
-
-        window.onload = cargarMaestros;
-
-        document.getElementById('form-agro').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-enviar');
-            const msg = document.getElementById('mensaje');
-
-            const sup = parseFloat(document.getElementById('superficie').value) || 0;
-            const caudal = parseFloat(document.getElementById('caudalHa').value) || 0;
-
-            let productosArray = [];
-            document.querySelectorAll('.fila-prod').forEach(fila => {
-                const prod = fila.querySelector('.sel-prod').value;
-                const pa = fila.querySelector('.sel-pa').value;
-                const dosis = parseFloat(fila.querySelector('.input-dosis').value) || 0;
-                const unidad = fila.querySelector('.txt-unidad').textContent;
-
-                if (prod) {
-                    productosArray.push({
-                        nombre: prod,
-                        principioActivo: pa,
-                        dosis: dosis,
-                        unidad: unidad,
-                        total: parseFloat((sup * dosis).toFixed(2))
-                    });
-                }
-            });
-
-            btn.disabled = true;
-            btn.textContent = "Guardando en Google Sheets...";
-
-            const payload = {
-                fecha: document.getElementById('fecha').value,
-                establecimiento: document.getElementById('establecimiento').value,
-                lote: document.getElementById('lote').value,
-                operario: document.getElementById('operario').value,
-                superficie: sup,
-                caudalHa: caudal,
-                caldoTotal: sup * caudal,
-                productos: productosArray
-            };
-
-          fetch(URL_WEB_APP, {
-
-                method: 'POST',
-
-                body: JSON.stringify(payload)
-
-            })
-
+    // Al cargar la página, traemos los datos de Maestros mediante doGet
+    window.onload = function() {
+        fetch(urlScript)
             .then(res => res.json())
-
             .then(data => {
-
-                if (data.status === 'success') {
-
-                    msg.textContent = "✅ ¡Aplicación registrada con éxito! ID: " + data.apliId;
-
-                    msg.className = "mt-4 text-center text-sm font-medium text-emerald-400";
-
-                    document.getElementById('form-agro').reset();
-
-                    document.getElementById('fecha').valueAsDate = new Date();
-
-                    document.getElementById('lista-productos').innerHTML = '';
-
-                    agregarProductoFila();
-
+                if(data.status === "success" && data.maestros && data.maestros.productos) {
+                    listaProductosGlobal = data.maestros.productos;
+                    const selectProd = document.getElementById('producto');
+                    selectProd.innerHTML = '<option value="">Seleccione un producto...</option>';
+                    
+                    listaProductosGlobal.forEach(prod => {
+                        let opt = document.createElement('option');
+                        opt.value = prod.nombre;
+                        opt.textContent = prod.nombre;
+                        selectProd.appendChild(opt);
+                    });
+                    marcarConexion(true);
                 } else {
-
-                    msg.textContent = "❌ Error: " + data.message;
-
-                    msg.className = "mt-4 text-center text-sm font-medium text-rose-400";
-
+                    alert("Error al cargar los productos maestros.");
+                    marcarConexion(false);
                 }
-
-                btn.disabled = false;
-
-                btn.textContent = "Guardar Aplicación en Google Sheets 🚀";
-
             })
-
             .catch(err => {
-
                 console.error(err);
-
-                msg.textContent = "❌ Error al conectar con Google Sheets.";
-
-                msg.className = "mt-4 text-center text-sm font-medium text-rose-400";
-
-                btn.disabled = false;
-
-                btn.textContent = "Guardar Aplicación en Google Sheets 🚀";
-
+                alert("No se pudo conectar con el servidor para traer los productos.");
+                marcarConexion(false);
             });
+    };
 
+    function marcarConexion(estado) {
+        const badge = document.getElementById('badgeConexion');
+        const dot = document.getElementById('dotConexion');
+        const txt = document.getElementById('txtConexion');
+        if(estado) {
+            badge.classList.remove('error');
+            dot.classList.remove('error');
+            txt.textContent = "Conectado a Google Sheets";
+        } else {
+            badge.classList.add('error');
+            dot.classList.add('error');
+            txt.textContent = "Sin conexión";
+        }
+    }
+
+    // Función para autocompletar el principio activo según el producto elegido
+    function actualizarPrincipioActivo() {
+        const nombreSeleccionado = document.getElementById('producto').value;
+        const inputPA = document.getElementById('principioActivo');
+
+        const productoEncontrado = listaProductosGlobal.find(p => p.nombre === nombreSeleccionado);
+        if (productoEncontrado) {
+            inputPA.value = productoEncontrado.principioActivo;
+        } else {
+            inputPA.value = '';
+        }
+    }
+
+    // Función para enviar la compra al Apps Script
+    function guardarStock() {
+        const fecha = document.getElementById('fecha').value;
+        const producto = document.getElementById('producto').value;
+        const principio = document.getElementById('principioActivo').value;
+        const cantidad = document.getElementById('cantidad').value;
+
+        if(!producto || !cantidad) {
+            alert("Completá el producto y la cantidad.");
+            return;
+        }
+
+        const datosStock = {
+            tipoAccion: "ingreso_stock", // Clave que lee el doPost del servidor
+            fecha: fecha,
+            producto: producto,
+            principioActivo: principio,
+            cantidad: cantidad
+        };
+
+        fetch(urlScript, {
+            method: 'POST',
+            body: JSON.stringify(datosStock)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("¡Stock ingresado correctamente!");
+            document.getElementById('cantidad').value = '';
+            document.getElementById('producto').value = '';
+            document.getElementById('principioActivo').value = '';
+            marcarConexion(true);
+        })
+        .catch(error => {
+            alert("Error al guardar el stock: " + error);
+            marcarConexion(false);
         });
-
-    </script>
+    }
+</script>
 
 </body>
-
 </html>
